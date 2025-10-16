@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Slider } from "@/components/ui/slider"
-import { Plus, Trash2, Camera, FileText, Beaker, Layers } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Plus, Trash2, Camera, FileText, Beaker, Layers, AlertCircle } from "lucide-react"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 
@@ -673,27 +674,53 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
 
   if (!projectId || !holeId) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="flex flex-col items-center justify-center">
-          <div className="relative w-40 h-40 sm:w-52 sm:h-52 opacity-90">
-            <Image src="/placeholder.svg" alt="" fill className="object-contain" priority />
-          </div>
-          <div className="mt-4 flex items-center gap-3 text-muted-foreground">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-              <Layers className="h-5 w-5" />
+      <div className="flex items-center justify-center h-full p-6">
+        <Card className="w-full max-w-md bg-blue-50/50 border-blue-200 shadow-sm">
+          <CardHeader className="text-center pb-3">
+            <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <AlertCircle className="h-6 w-6 text-blue-600" />
             </div>
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-              <Camera className="h-5 w-5" />
+            <CardTitle className="text-lg font-semibold text-blue-900">
+              Select Project & Hole to Start Logging
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-3">
+            <p className="text-sm text-blue-700 leading-relaxed">
+              Please select a <strong>Project ID</strong> and <strong>Hole ID</strong> from the header above to begin geological logging.
+            </p>
+
+            <div className="flex items-center justify-center gap-4 pt-2">
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Layers className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-600 font-medium">Lithology</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Camera className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-600 font-medium">Photos</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <FileText className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-600 font-medium">Reports</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Beaker className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-600 font-medium">Samples</span>
+              </div>
             </div>
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-              <FileText className="h-5 w-5" />
+
+            <div className="pt-2 text-xs text-blue-600/80">
+              Once selected, you'll be able to log geological data, add photos, and manage samples.
             </div>
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-              <Beaker className="h-5 w-5" />
-            </div>
-          </div>
-          <span className="sr-only">Select a project and hole to begin</span>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
