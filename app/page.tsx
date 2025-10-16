@@ -117,7 +117,7 @@ export default function DrillHoleLogger() {
         />
 
         <div className="flex flex-col flex-1 overflow-hidden">
-          <div className="flex items-center justify-between bg-gray-100 px-4 py-2 border-b">
+          <div className="flex items-center justify-between bg-gray-100 px-3 sm:px-4 py-2 border-b">
             <h2 className="text-sm font-semibold text-gray-700">{activeSection} Logging</h2>
             <Button
               variant="ghost"
@@ -133,7 +133,7 @@ export default function DrillHoleLogger() {
 
           <div className="flex flex-1 overflow-hidden">
             {corePanelOpen && (
-              <div className="w-full lg:w-64 flex-shrink-0 border-r border-gray-200 overflow-auto lg:block">
+              <div className="w-full md:w-1/3 lg:w-64 xl:w-80 2xl:w-96 flex-shrink-0 border-r border-gray-200 overflow-auto lg:block">
                 <CoreImageSidebar coreSections={mockCoreSections} />
               </div>
             )}

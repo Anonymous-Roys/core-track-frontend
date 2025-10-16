@@ -38,7 +38,7 @@ export function Sidebar({ activeSection, onSectionChange, isOpen = true, onClose
 
       <aside
         className={cn(
-          "fixed lg:relative inset-y-0 left-0 z-50 w-64 lg:w-48 bg-gray-900 text-gray-200 p-3 border-r-2 border-gray-700 transition-transform duration-300 lg:translate-x-0",
+          "fixed lg:relative inset-y-0 left-0 z-50 w-64 md:w-56 lg:w-52 xl:w-56 bg-gray-900 text-gray-200 p-3 border-r-2 border-gray-700 transition-transform duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >

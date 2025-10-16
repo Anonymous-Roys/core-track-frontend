@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Slider } from "@/components/ui/slider"
-import { Plus, Trash2 } from "lucide-react"
+import { Plus, Trash2, Camera, FileText, Beaker, Layers } from "lucide-react"
+import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 
 interface LogEntry {
@@ -672,8 +673,27 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
 
   if (!projectId || !holeId) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        <p className="text-lg">Please select a Project ID and Hole ID to begin logging</p>
+      <div className="flex items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center">
+          <div className="relative w-40 h-40 sm:w-52 sm:h-52 opacity-90">
+            <Image src="/placeholder.svg" alt="" fill className="object-contain" priority />
+          </div>
+          <div className="mt-4 flex items-center gap-3 text-muted-foreground">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
+              <Layers className="h-5 w-5" />
+            </div>
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
+              <Camera className="h-5 w-5" />
+            </div>
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
+              <FileText className="h-5 w-5" />
+            </div>
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
+              <Beaker className="h-5 w-5" />
+            </div>
+          </div>
+          <span className="sr-only">Select a project and hole to begin</span>
+        </div>
       </div>
     )
   }
@@ -702,9 +722,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -851,9 +870,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -971,9 +989,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1128,9 +1145,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1310,9 +1326,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1375,9 +1390,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1511,9 +1525,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1668,9 +1681,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1777,9 +1789,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                 return (
                   <tr
                     key={log.id}
-                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                      isLargeInterval ? "bg-amber-50" : ""
-                    }`}
+                    className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                      }`}
                   >
                     <td className="px-4 py-2">
                       <Input
@@ -1938,9 +1949,8 @@ export function LoggingTable({ projectId, holeId, section }: LoggingTableProps) 
                   return (
                     <tr
                       key={log.id}
-                      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                        isLargeInterval ? "bg-amber-50" : ""
-                      }`}
+                      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${isLargeInterval ? "bg-amber-50" : ""
+                        }`}
                     >
                       <td className="px-4 py-2">
                         <Input

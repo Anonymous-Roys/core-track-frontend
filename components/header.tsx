@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { LayoutDashboard, FileText, Menu, Bell, User } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -26,6 +28,20 @@ export function Header({
   isDashboard = false,
   onMenuClick,
 }: HeaderProps) {
+  const [newHoleId, setNewHoleId] = useState("")
+
+  const handleAddHoleId = () => {
+    if (!newHoleId.trim() || !projectId) return
+    onHoleIdChange(newHoleId.trim())
+    setNewHoleId("")
+  }
+
+  const handleNewHoleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      handleAddHoleId()
+    }
+  }
   return (
     <header className="flex items-center justify-between bg-gray-800 px-3 sm:px-5 py-3 border-b-2 border-gray-600">
       <div className="flex items-center gap-2 sm:gap-6">
@@ -106,6 +122,26 @@ export function Header({
                 <SelectItem value="DH-005">DH-005</SelectItem>
               </SelectContent>
             </Select>
+            <div className="hidden md:flex items-center gap-2">
+              <Input
+                id="new-hole-id"
+                value={newHoleId}
+                onChange={(e) => setNewHoleId(e.target.value)}
+                onKeyDown={handleNewHoleKeyDown}
+                placeholder="Add Hole ID"
+                className="w-28 lg:w-40 h-9 bg-gray-100 border-gray-400"
+                disabled={!projectId}
+              />
+              <Button
+                variant="secondary"
+                size="sm"
+                className="h-9"
+                onClick={handleAddHoleId}
+                disabled={!projectId || !newHoleId.trim()}
+              >
+                Add
+              </Button>
+            </div>
           </div>
         )}
       </div>
