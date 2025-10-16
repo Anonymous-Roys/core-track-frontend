@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
+import { BlockModal } from "@/components/block-modal"
 import {
   ChevronDown,
   ChevronRight,
@@ -404,8 +405,9 @@ export function DashboardContent({ selectedProject }: DashboardContentProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [locationFilter, setLocationFilter] = useState("all")
-  const [expandedLocations, setExpandedLocations] = useState<string[]>(["BLOCK 4", "BLOCK 2&3", "BLOCK 5", "BLOCK 8"])
+  const [expandedLocations, setExpandedLocations] = useState<string[]>([])
   const [filterModalOpen, setFilterModalOpen] = useState(false)
+  const [selectedBlock, setSelectedBlock] = useState<string | null>(null)
 
   // Calculate KPIs
   const kpis = useMemo(() => {
@@ -513,9 +515,6 @@ export function DashboardContent({ selectedProject }: DashboardContentProps) {
     return groups
   }, [filteredHoles])
 
-  const toggleLocation = (location: string) => {
-    setExpandedLocations((prev) => (prev.includes(location) ? prev.filter((l) => l !== location) : [...prev, location]))
-  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -743,115 +742,117 @@ export function DashboardContent({ selectedProject }: DashboardContentProps) {
         </Select>
       </div>
 
-      <div className="space-y-3 sm:space-y-4">
-        {Object.entries(groupedHoles).map(([location, holes]) => (
-          <Card key={location}>
-            <CardHeader
-              className="cursor-pointer hover:bg-muted/50 transition-colors min-h-[44px]"
-              onClick={() => toggleLocation(location)}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        {Object.entries(groupedHoles).map(([location, holes]) => {
+          const blockStats = {
+            drilled: holes.filter(h => h.status === "DRILLED").length,
+            drilling: holes.filter(h => h.status === "DRILLING").length,
+            notDrilled: holes.filter(h => h.status === "NOT DRILLED").length,
+            abandoned: holes.filter(h => h.status === "ABANDONED").length,
+            totalMeters: holes
+              .filter((h) => h.status === "DRILLED" || h.status === "ABANDONED")
+              .reduce((sum, h) => sum + h.drilledDepth, 0),
+            avgDepth: holes.length > 0
+              ? holes.reduce((sum, h) => sum + h.plannedDepth, 0) / holes.length
+              : 0,
+          }
+
+          return (
+            <Card
+              key={location}
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 aspect-square flex flex-col"
+              onClick={() => setSelectedBlock(location)}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  {expandedLocations.includes(location) ? (
-                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                  ) : (
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                  )}
-                  <CardTitle className="text-base sm:text-xl">{location}</CardTitle>
-                  <Badge variant="secondary" className="text-xs">
-                    {holes.length} holes
-                  </Badge>
+              <CardHeader className="flex-shrink-0 pb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <CardTitle className="text-lg font-bold text-foreground truncate">
+                    {location}
+                  </CardTitle>
+                  <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => e.stopPropagation()}
-                  className="hidden sm:flex min-h-[44px]"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Hole
-                </Button>
-              </div>
-            </CardHeader>
+                <Badge variant="secondary" className="text-xs w-fit">
+                  {holes.length} holes
+                </Badge>
+              </CardHeader>
 
-            {expandedLocations.includes(location) && (
-              <CardContent className="pt-0">
-                <div className="space-y-2">
-                  {holes.map((hole) => (
-                    <Link key={hole.id} href={`/?holeId=${hole.id}`} className="block">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border hover:bg-muted/50 transition-colors">
-                        <div className={`h-3 w-3 rounded-full ${getStatusDot(hole.status)} flex-shrink-0`} />
+              <CardContent className="flex-1 flex flex-col justify-between space-y-4">
+                {/* Main Statistics */}
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-1">
+                      {blockStats.drilled}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Completed</div>
+                  </div>
 
-                        <div className="flex-1 grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-4">
-                          <div className="col-span-2 sm:col-span-1">
-                            <div className="font-semibold text-foreground text-sm sm:text-base">{hole.id}</div>
-                            <div className="text-xs text-muted-foreground">{hole.siteId}</div>
-                          </div>
-
-                          <div>
-                            <div className="text-xs text-muted-foreground">Planned</div>
-                            <div className="font-medium text-sm">{hole.plannedDepth}m</div>
-                          </div>
-
-                          <div>
-                            <div className="text-xs text-muted-foreground">Drilled</div>
-                            <div className="font-medium text-sm">
-                              {hole.drilledDepth > 0 ? `${hole.drilledDepth}m` : "-"}
-                            </div>
-                            {hole.status === "DRILLING" && hole.drilledDepth > 0 && (
-                              <div className="w-full bg-gray-200 rounded-full h-1 sm:h-1.5 mt-1">
-                                <div
-                                  className="bg-blue-500 h-1 sm:h-1.5 rounded-full"
-                                  style={{ width: `${Math.min((hole.drilledDepth / hole.plannedDepth) * 100, 100)}%` }}
-                                />
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="hidden sm:block">
-                            <div className="text-xs text-muted-foreground">End Date</div>
-                            <div className="font-medium text-sm">{hole.endDate || "-"}</div>
-                          </div>
-
-                          <div className="col-span-2 sm:col-span-1 flex items-center justify-between sm:justify-start">
-                            <Badge className={`${getStatusColor(hole.status)} border text-xs`}>{hole.status}</Badge>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2 justify-end sm:justify-start">
-                          <div
-                            className={`p-1.5 rounded ${hole.hasPhoto ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}
-                          >
-                            <Camera className="h-4 w-4" />
-                          </div>
-                          <div
-                            className={`p-1.5 rounded ${hole.hasLitho ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}
-                          >
-                            <FileText className="h-4 w-4" />
-                          </div>
-                          <div
-                            className={`p-1.5 rounded ${hole.hasSamples ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}
-                          >
-                            <Beaker className="h-4 w-4" />
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => e.preventDefault()}
-                            className="min-h-[44px] min-w-[44px]"
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </div>
+                  {/* Status Indicators */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-green-500" />
+                        <span className="text-muted-foreground">Drilled</span>
                       </div>
-                    </Link>
-                  ))}
+                      <span className="font-medium">{blockStats.drilled}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-blue-500" />
+                        <span className="text-muted-foreground">Drilling</span>
+                      </div>
+                      <span className="font-medium">{blockStats.drilling}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-gray-400" />
+                        <span className="text-muted-foreground">Planned</span>
+                      </div>
+                      <span className="font-medium">{blockStats.notDrilled}</span>
+                    </div>
+
+                    {blockStats.abandoned > 0 && (
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 w-2 rounded-full bg-amber-500" />
+                          <span className="text-muted-foreground">Abandoned</span>
+                        </div>
+                        <span className="font-medium">{blockStats.abandoned}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Stats */}
+                <div className="space-y-2 pt-2 border-t">
+                  <div className="text-center">
+                    <div className="text-lg font-semibold text-primary">
+                      {blockStats.totalMeters.toFixed(0)}m
+                    </div>
+                    <div className="text-xs text-muted-foreground">Total Drilled</div>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-muted-foreground">
+                      Avg: {blockStats.avgDepth.toFixed(0)}m depth
+                    </div>
+                  </div>
                 </div>
               </CardContent>
-            )}
-          </Card>
-        ))}
+            </Card>
+          )
+        })}
       </div>
+
+      {/* Block Modal */}
+      {selectedBlock && (
+        <BlockModal
+          isOpen={!!selectedBlock}
+          onClose={() => setSelectedBlock(null)}
+          location={selectedBlock}
+          holes={groupedHoles[selectedBlock] || []}
+        />
+      )}
     </div>
   )
 }
