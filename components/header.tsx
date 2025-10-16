@@ -1,11 +1,9 @@
 "use client"
 
-import { useState } from "react"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { LayoutDashboard, FileText, Menu, Bell, User } from "lucide-react"
+import { LayoutDashboard, FileText, Menu, Bell, User, Plus } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -28,20 +26,6 @@ export function Header({
   isDashboard = false,
   onMenuClick,
 }: HeaderProps) {
-  const [newHoleId, setNewHoleId] = useState("")
-
-  const handleAddHoleId = () => {
-    if (!newHoleId.trim() || !projectId) return
-    onHoleIdChange(newHoleId.trim())
-    setNewHoleId("")
-  }
-
-  const handleNewHoleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      handleAddHoleId()
-    }
-  }
   return (
     <header className="flex items-center justify-between bg-gray-800 px-3 sm:px-5 py-3 border-b-2 border-gray-600">
       <div className="flex items-center gap-2 sm:gap-6">
@@ -122,31 +106,17 @@ export function Header({
                 <SelectItem value="DH-005">DH-005</SelectItem>
               </SelectContent>
             </Select>
-            <div className="hidden md:flex items-center gap-2">
-              <Input
-                id="new-hole-id"
-                value={newHoleId}
-                onChange={(e) => setNewHoleId(e.target.value)}
-                onKeyDown={handleNewHoleKeyDown}
-                placeholder="Add Hole ID"
-                className="w-28 lg:w-40 h-9 bg-gray-100 border-gray-400"
-                disabled={!projectId}
-              />
-              <Button
-                variant="secondary"
-                size="sm"
-                className="h-9"
-                onClick={handleAddHoleId}
-                disabled={!projectId || !newHoleId.trim()}
-              >
-                Add
-              </Button>
-            </div>
           </div>
         )}
       </div>
 
       <div className="flex items-center gap-2">
+        <Link href="/create-hole" className="hidden sm:block">
+          <Button size="sm" className="min-h-[36px] bg-blue-600 hover:bg-blue-700 text-white">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Hole
+          </Button>
+        </Link>
         <Button variant="ghost" size="sm" className="text-gray-300 hover:text-gray-100 hover:bg-gray-700 p-2">
           <Bell className="h-5 w-5" />
         </Button>

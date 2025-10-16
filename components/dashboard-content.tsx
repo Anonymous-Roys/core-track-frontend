@@ -556,13 +556,6 @@ export function DashboardContent({ selectedProject }: DashboardContentProps) {
           <p className="text-muted-foreground mt-1 text-sm sm:text-base">Monitor and manage drill hole operations</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/create-hole">
-            <Button size="sm" className="min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white">
-              <Plus className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Create New Hole</span>
-              <span className="sm:hidden">New Hole</span>
-            </Button>
-          </Link>
           <Button variant="outline" size="sm" className="min-h-[44px] bg-transparent">
             <Filter className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Filter</span>
