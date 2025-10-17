@@ -7,7 +7,7 @@ export default function ServiceWorkerRegistration() {
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
-      window.workbox !== undefined
+      typeof (window as any).workbox !== "undefined"
     ) {
       const registerServiceWorker = async () => {
         try {
