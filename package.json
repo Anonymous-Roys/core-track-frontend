@@ -48,6 +48,7 @@
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
+    "next-pwa": "^5.6.0",
     "next-themes": "latest",
     "react": "^19",
     "react-day-picker": "9.8.0",
@@ -70,5 +71,6 @@
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
 }
