@@ -2,15 +2,25 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
+import ServiceWorkerRegistration from '@/components/service-worker-registration'
 import './globals.css'
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#000000',
+}
+
 export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:3000'),
   title: {
     default: 'CoreTrack',
     template: '%s • CoreTrack',
   },
   description: 'Core logging and drilling operations dashboard for geology teams.',
   applicationName: 'CoreTrack',
+  manifest: '/manifest.json',
   keywords: [
     'core logging',
     'geology',
@@ -21,9 +31,19 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'CoreTrack' }],
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
+    icon: '/icons/icon-192x192.png',
+    shortcut: '/icons/icon-192x192.png',
+    apple: '/icons/icon-192x192.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Core Track',
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
   },
   openGraph: {
     title: 'CoreTrack',
@@ -57,6 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+        <ServiceWorkerRegistration />
         {children}
         <Analytics />
       </body>
