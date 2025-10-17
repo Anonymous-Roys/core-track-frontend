@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
 import ServiceWorkerRegistration from '@/components/service-worker-registration'
+import { InstallPWA } from '@/components/install-pwa'
 import './globals.css'
 
 export const viewport = {
@@ -78,6 +79,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <ServiceWorkerRegistration />
+        <InstallPWA />
         {children}
         <Analytics />
       </body>
